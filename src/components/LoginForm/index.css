@@ -5,7 +5,7 @@
   align-items: center;
   height: 100vh;
   width: 100%;
-  background-image: url('https://www.teahub.io/photos/full/200-2004778_hd-gaming-background-technology-login-background-images-hd.jpg');
+  background-image: radial-gradient(gray, #cadbce, #535955);
   background-size: cover;
 }
 
@@ -42,13 +42,8 @@
 }
 
 .login-website-logo-desktop-img {
-  width: 185px;
-}
-
-@media screen and (max-width: 991px) {
-  .login-website-logo-desktop-img {
-    display: none;
-  }
+  width: 200px;
+  height: 60px;
 }
 
 .form-container {
@@ -59,7 +54,7 @@
   border-radius: 8px;
   width: 100%;
   max-width: 350px;
-  background-color: lightskyblue;
+  background-color: lightseagreen;
 }
 
 @media screen and (min-width: 992px) {
@@ -76,6 +71,7 @@
   flex-direction: column;
   margin-top: 20px;
   width: 100%;
+  background-color: transparent;
 }
 
 .input-label {
@@ -93,20 +89,22 @@
   border: 1px solid #d7dfe9;
   background-color: #e2e8f0;
   color: #64748b;
-  border-radius: 2px;
+  border-radius: 4px;
   margin-top: 5px;
   padding: 8px 16px 8px 16px;
+  background-color: transparent;
 }
 
 .password-input-field {
   font-size: 14px;
   height: 40px;
   border: 1px solid #d7dfe9;
-  background-color: #e2e8f0;
+
   color: #64748b;
-  border-radius: 2px;
+  border-radius: 4px;
   margin-top: 5px;
   padding: 8px 16px 8px 16px;
+  background-color: transparent;
 }
 
 .login-button {
