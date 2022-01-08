@@ -24,6 +24,10 @@ class Home extends Component {
     fetchedData: [],
   }
 
+  componentDidMount() {
+    this.getPostsData()
+  }
+
   getPostsData = async () => {
     this.setState({getApiStatus: apiStatusConstants.inProgress})
     const apiUrl = 'https://finance-peer-node-js.herokuapp.com/posts'
@@ -58,16 +62,19 @@ class Home extends Component {
 
     const response = await fetch(apiUrl, options)
 
-    console.log(response)
     if (response.ok) {
       console.log(response.message)
-      this.setState({postApiStatus: apiStatusConstants.success})
+      this.setState(
+        {postApiStatus: apiStatusConstants.success},
+        this.getPostsData,
+      )
     } else {
       this.setState({postApiStatus: apiStatusConstants.failure})
     }
   }
 
   clearData = async () => {
+    console.log('clear data clicked')
     this.setState({getApiStatus: apiStatusConstants.inProgress})
     const apiUrl = 'https://finance-peer-node-js.herokuapp.com/data'
     const options = {
@@ -77,7 +84,7 @@ class Home extends Component {
     const response = await fetch(apiUrl, options)
 
     if (response.ok) {
-      console.log()
+      this.setState({getApiStatus: apiStatusConstants.initial})
     }
 
     console.log(response)
@@ -112,7 +119,8 @@ class Home extends Component {
       case apiStatusConstants.inProgress:
         return (
           <p className="in-progress">
-            Your file <span>${fileName}</span> is uploading...
+            Your file <span className={{fontWeight: 'bold'}}>{fileName}</span>
+            is uploading...
           </p>
         )
       case apiStatusConstants.success:
@@ -127,15 +135,6 @@ class Home extends Component {
   renderGettingPostStatus = () => {
     const {getApiStatus, fetchedData} = this.state
     switch (getApiStatus) {
-      case apiStatusConstants.initial:
-        return (
-          <div>
-            <h4>Click On Below To See output </h4>
-            <button type="button" onClick={this.getPostsData}>
-              See Data
-            </button>
-          </div>
-        )
       case apiStatusConstants.inProgress:
         return (
           <div className="react-loader-spinner">
@@ -143,28 +142,49 @@ class Home extends Component {
           </div>
         )
       case apiStatusConstants.success:
-        return (
+        return fetchedData.length > 0 ? (
           <div>
-            {fetchedData.length > 0 ? (
-              <ul>
-                {fetchedData.map(each => (
-                  <li key={each.id}>
-                    <h3>{each.title}</h3>
-                    <p>{each.body}</p>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No Posts are there Please upload a file to see posts</p>
-            )}
-
-            <button type="button" onClick={this.clearData}>
-              Clear
-            </button>
+            <h1 className="output-heading">Uploaded Data</h1>
+            <ul className="posts-container">
+              {fetchedData.map(each => (
+                <li key={each.id} className="post-container">
+                  <img
+                    className="card-image"
+                    src="https://i.pinimg.com/564x/ec/61/d3/ec61d3114cc5269485d508244f531bdf.jpg"
+                    alt={`user ${each.userId}`}
+                  />
+                  <div>
+                    <h3 className="card-title">{each.title}</h3>
+                    <p className="card-body">{each.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <hr className="middle-line" />
+            <div className="clear-container">
+              <p className="home-description">
+                To Clear (or) Delete Data in The Db Click On Clear button
+              </p>
+              <button
+                type="button"
+                className="upload-button"
+                onClick={this.clearData}
+              >
+                Clear
+              </button>
+            </div>
           </div>
+        ) : (
+          <p className="home-description">
+            No Posts are there Please upload a file to see posts
+          </p>
         )
       case apiStatusConstants.failure:
-        return <p>Fetching Failed Please Try Again</p>
+        return (
+          <p className="home-description failure">
+            Fetching Failed Please Try Again
+          </p>
+        )
       default:
         return null
     }
