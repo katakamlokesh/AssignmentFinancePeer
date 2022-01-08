@@ -86,7 +86,12 @@
   }
 }
 
-.shop-now-button {
+.react-file-reader-container {
+  width: 50%;
+  text-align: center;
+}
+
+.upload-button {
   width: 60%;
   font-size: 14px;
   font-weight: 400;
@@ -103,8 +108,31 @@
 }
 
 @media screen and (min-width: 768px) {
-  .shop-now-button {
+  .upload-button {
     width: 150px;
     font-size: 16px;
   }
+}
+
+.in-progress {
+  color: blue;
+  font-family: 'Roboto';
+  font-size: 20px;
+}
+.success {
+  color: green;
+  font-family: 'Roboto';
+  font-size: 22px;
+}
+
+.failure {
+  color: red;
+  font-family: 'Roboto';
+  font-size: 20px;
+}
+
+.result-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
 }
