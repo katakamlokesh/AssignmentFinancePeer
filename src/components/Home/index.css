@@ -144,6 +144,16 @@
   color: #1e293b;
 }
 
+.total-posts {
+  font-family: 'Roboto';
+  font-size: 20px;
+  color: #252c54;
+}
+.total-posts-span {
+  font-weight: bold;
+  font-size: 30px;
+}
+
 .posts-container {
   padding-left: 0;
   list-style-type: none;
@@ -158,21 +168,37 @@
   padding: 8px;
   margin-bottom: 20px;
 }
-
-.card-image {
-  height: 80px;
-  width: 80px;
+.image-user-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin-right: 16px;
-  margin-top: 12px;
+}
+.card-image {
+  height: 60px;
+  width: 60px;
   background-color: #ffffff;
-  padding: 12px;
-  align-self: flex-start;
+  padding: 8px;
 }
 
 @media screen and (min-width: 768px) {
   .card-image {
-    height: 100px;
-    width: 100px;
+    height: 80px;
+    width: 80px;
+  }
+}
+
+.username {
+  font-family: 'Roboto';
+  font-size: 16px;
+  color: #343d4d;
+  margin-top: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .username {
+    font-size: 18px;
   }
 }
 

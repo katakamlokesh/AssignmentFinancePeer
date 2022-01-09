@@ -119,7 +119,7 @@ class Home extends Component {
       case apiStatusConstants.inProgress:
         return (
           <p className="in-progress">
-            Your file <span className={{fontWeight: 'bold'}}>{fileName}</span>
+            Your file <span className={{fontWeight: 'bold'}}>{fileName} </span>
             is uploading...
           </p>
         )
@@ -145,16 +145,24 @@ class Home extends Component {
         return fetchedData.length > 0 ? (
           <div>
             <h1 className="output-heading">Uploaded Data</h1>
+            <p className="total-posts">
+              Total Posts:{' '}
+              <span className="total-posts-span">{fetchedData.length}</span>
+            </p>
             <ul className="posts-container">
               {fetchedData.map(each => (
                 <li key={each.id} className="post-container">
-                  <img
-                    className="card-image"
-                    src="https://i.pinimg.com/564x/ec/61/d3/ec61d3114cc5269485d508244f531bdf.jpg"
-                    alt={`user ${each.userId}`}
-                  />
+                  <div className="image-user-container">
+                    <img
+                      className="card-image"
+                      src="https://i.pinimg.com/564x/ec/61/d3/ec61d3114cc5269485d508244f531bdf.jpg"
+                      alt={`user ${each.userId}`}
+                    />
+                    <h1 className="username">user {each.userId}</h1>
+                  </div>
+
                   <div>
-                    <h3 className="card-title">{each.title}</h3>
+                    <h1 className="card-title">{each.title}</h1>
                     <p className="card-body">{each.body}</p>
                   </div>
                 </li>
