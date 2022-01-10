@@ -1,0 +1,85 @@
+.post-container {
+  border: 1px solid gray;
+  background-color: lightcyan;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px;
+  margin-bottom: 20px;
+  height: 160px;
+}
+.image-user-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 8px;
+  border: 1px solid gray;
+  border-radius: 12px;
+  width: 12%;
+  height: 100%;
+  flex-shrink: 0;
+  background-color: #defafa;
+}
+.card-image {
+  height: 60px;
+  width: 60px;
+  padding: 8px;
+  border-radius: 50px;
+}
+
+@media screen and (min-width: 768px) {
+  .card-image {
+    height: 80px;
+    width: 80px;
+  }
+}
+
+.username {
+  font-family: 'Roboto';
+  font-size: 16px;
+  color: #343d4d;
+  margin-top: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .username {
+    font-size: 18px;
+  }
+}
+
+.card-data-container {
+  border: 1px solid gray;
+  width: 88%;
+  padding: 8px;
+  border-radius: 12px;
+  height: 100%;
+  background-color: #defafa;
+}
+
+.card-title {
+  font-family: 'Roboto';
+  font-size: 18px;
+  color: #343d4d;
+}
+@media screen and (min-width: 768px) {
+  .card-title {
+    font-size: 20px;
+  }
+}
+.card-body {
+  font-family: 'Roboto';
+  font-size: 16px;
+  color: #3f485e;
+}
+
+@media screen and (min-width: 768px) {
+  .card-body {
+    font-size: 18px;
+  }
+}
+
+.clear-container {
+  padding: 16px;
+}

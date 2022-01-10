@@ -5,6 +5,7 @@ import {Redirect} from 'react-router-dom'
 import Loader from 'react-loader-spinner'
 
 import Header from '../Header'
+import PostCard from '../PostCard'
 
 import './index.css'
 
@@ -13,6 +14,7 @@ const apiStatusConstants = {
   inProgress: 'IN_PROGRESS',
   success: 'SUCCESS',
   failure: 'FAILURE',
+  cleared: 'CLEARED',
 }
 
 class Home extends Component {
@@ -29,7 +31,10 @@ class Home extends Component {
   }
 
   getPostsData = async () => {
-    this.setState({getApiStatus: apiStatusConstants.inProgress})
+    this.setState({
+      getApiStatus: apiStatusConstants.inProgress,
+      postApiStatus: apiStatusConstants.initial,
+    })
     const apiUrl = 'https://finance-peer-node-js.herokuapp.com/posts'
     const response = await fetch(apiUrl)
 
@@ -84,14 +89,11 @@ class Home extends Component {
     const response = await fetch(apiUrl, options)
 
     if (response.ok) {
-      this.setState({getApiStatus: apiStatusConstants.initial})
+      this.setState({getApiStatus: apiStatusConstants.cleared})
     }
-
-    console.log(response)
   }
 
   handleFiles = files => {
-    console.log('upload button clicked')
     const {name} = files[0]
 
     const reader = new FileReader()
@@ -103,14 +105,48 @@ class Home extends Component {
         title: each.title,
         body: each.body,
       }))
-
-      console.log(modifiedData)
       this.setState(
         {fileName: name, uploadData: modifiedData},
         this.sendingData,
       )
     }
     reader.readAsText(files[0])
+  }
+
+  renderPostsSuccess = () => {
+    const {fetchedData} = this.state
+
+    return fetchedData.length > 0 ? (
+      <div>
+        <h1 className="output-heading">Uploaded Data</h1>
+        <p className="total-posts">
+          Total Posts:{' '}
+          <span className="total-posts-span">{fetchedData.length}</span>
+        </p>
+        <ul className="posts-container">
+          {fetchedData.map(each => (
+            <PostCard key={each.id} postDetails={each} />
+          ))}
+        </ul>
+        <hr className="middle-line" />
+        <div className="clear-container">
+          <p className="home-description">
+            To Clear (or) Delete Data in The Db Click On Clear button
+          </p>
+          <button
+            type="button"
+            className="upload-button"
+            onClick={this.clearData}
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+    ) : (
+      <p className="home-description">
+        No Posts are there Please upload a file to see posts
+      </p>
+    )
   }
 
   renderUploadingFileStatus = () => {
@@ -133,7 +169,7 @@ class Home extends Component {
   }
 
   renderGettingPostStatus = () => {
-    const {getApiStatus, fetchedData} = this.state
+    const {getApiStatus} = this.state
     switch (getApiStatus) {
       case apiStatusConstants.inProgress:
         return (
@@ -142,57 +178,15 @@ class Home extends Component {
           </div>
         )
       case apiStatusConstants.success:
-        return fetchedData.length > 0 ? (
-          <div>
-            <h1 className="output-heading">Uploaded Data</h1>
-            <p className="total-posts">
-              Total Posts:{' '}
-              <span className="total-posts-span">{fetchedData.length}</span>
-            </p>
-            <ul className="posts-container">
-              {fetchedData.map(each => (
-                <li key={each.id} className="post-container">
-                  <div className="image-user-container">
-                    <img
-                      className="card-image"
-                      src="https://i.pinimg.com/564x/ec/61/d3/ec61d3114cc5269485d508244f531bdf.jpg"
-                      alt={`user ${each.userId}`}
-                    />
-                    <h1 className="username">user {each.userId}</h1>
-                  </div>
-
-                  <div>
-                    <h1 className="card-title">{each.title}</h1>
-                    <p className="card-body">{each.body}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <hr className="middle-line" />
-            <div className="clear-container">
-              <p className="home-description">
-                To Clear (or) Delete Data in The Db Click On Clear button
-              </p>
-              <button
-                type="button"
-                className="upload-button"
-                onClick={this.clearData}
-              >
-                Clear
-              </button>
-            </div>
-          </div>
-        ) : (
-          <p className="home-description">
-            No Posts are there Please upload a file to see posts
-          </p>
-        )
+        return this.renderPostsSuccess()
       case apiStatusConstants.failure:
         return (
           <p className="home-description failure">
             Fetching Failed Please Try Again
           </p>
         )
+      case apiStatusConstants.cleared:
+        return <p className="home-description success">Database cleared...!</p>
       default:
         return null
     }
@@ -212,7 +206,7 @@ class Home extends Component {
           <div className="home-content">
             <h1 className="home-heading">JSON File Uploader</h1>
             <img
-              src="https://icon-library.com/images/file-upload-icon/file-upload-icon-22.jpg"
+              src="https://res.cloudinary.com/dpx8zts9r/image/upload/v1641739592/financepeer_file_upload_icon_czdjsp.png"
               className="home-mobile-img"
               alt="file upload"
             />
@@ -229,7 +223,7 @@ class Home extends Component {
             {this.renderUploadingFileStatus()}
           </div>
           <img
-            src="https://icon-library.com/images/file-upload-icon/file-upload-icon-22.jpg"
+            src="https://res.cloudinary.com/dpx8zts9r/image/upload/v1641739592/financepeer_file_upload_icon_czdjsp.png"
             alt="file upload"
             className="home-desktop-img"
           />

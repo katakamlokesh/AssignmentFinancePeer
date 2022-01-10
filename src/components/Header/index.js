@@ -16,7 +16,7 @@ const Header = props => {
         <div className="nav-bar-mobile-logo-container">
           <img
             className="website-logo"
-            src="https://d18gf9zcxp8qg0.cloudfront.net/newWebsite/Financepeer_new_logo.png"
+            src="https://res.cloudinary.com/dpx8zts9r/image/upload/v1641739615/Financepeer_new_logo_ld85wz.png"
             alt="website logo"
           />
 

@@ -107,13 +107,13 @@ class LoginForm extends Component {
     return (
       <div className="login-form-container">
         <img
-          src="https://pathwayport.com/saasland/images/login@4x.png"
+          src="https://res.cloudinary.com/dpx8zts9r/image/upload/v1641739578/financepeer_login_image_mjgofr.png"
           className="login-img"
           alt="website login"
         />
         <form className="form-container" onSubmit={this.submitForm}>
           <img
-            src="https://d18gf9zcxp8qg0.cloudfront.net/newWebsite/Financepeer_new_logo.png"
+            src="https://res.cloudinary.com/dpx8zts9r/image/upload/v1641739615/Financepeer_new_logo_ld85wz.png"
             className="login-website-logo-desktop-img"
             alt="website logo"
           />
