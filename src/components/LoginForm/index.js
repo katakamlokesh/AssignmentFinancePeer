@@ -4,12 +4,19 @@ import Cookies from 'js-cookie'
 
 import './index.css'
 
+const apiStatusConstants = {
+  initial: 'INITIAL',
+  inProgress: 'IN_PROGRESS',
+  success: 'SUCCESS',
+}
+
 class LoginForm extends Component {
   state = {
     username: '',
     password: '',
     showSubmitError: false,
     errorMsg: '',
+    loginApiStatus: apiStatusConstants.initial,
   }
 
   onChangeUsername = event => {
@@ -34,6 +41,7 @@ class LoginForm extends Component {
 
   submitForm = async event => {
     event.preventDefault()
+    this.setState({loginApiStatus: apiStatusConstants.inProgress})
     const {username, password} = this.state
     const userDetails = {username, password}
     const url = 'https://finance-peer-node-js.herokuapp.com/login'
@@ -51,6 +59,7 @@ class LoginForm extends Component {
 
     if (response.ok === true) {
       this.onSubmitSuccess(data.jwt_token)
+      this.setState({loginApiStatus: apiStatusConstants.success})
     } else {
       this.onSubmitFailure(data.error_msg)
     }
@@ -96,6 +105,19 @@ class LoginForm extends Component {
     )
   }
 
+  renderLoginApiStatus = () => {
+    const {loginApiStatus} = this.state
+
+    switch (loginApiStatus) {
+      case apiStatusConstants.inProgress:
+        return 'Loading...'
+      case apiStatusConstants.success:
+        return 'Login Success'
+      default:
+        return 'Login'
+    }
+  }
+
   render() {
     const {showSubmitError, errorMsg} = this.state
     const jwtToken = Cookies.get('jwt_token')
@@ -120,7 +142,7 @@ class LoginForm extends Component {
           <div className="input-container">{this.renderUsernameField()}</div>
           <div className="input-container">{this.renderPasswordField()}</div>
           <button type="submit" className="login-button">
-            Login
+            {this.renderLoginApiStatus()}
           </button>
           {showSubmitError && <p className="error-message">*{errorMsg}</p>}
         </form>

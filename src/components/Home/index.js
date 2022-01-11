@@ -21,6 +21,7 @@ class Home extends Component {
   state = {
     postApiStatus: apiStatusConstants.initial,
     getApiStatus: apiStatusConstants.initial,
+    deleteApiStatus: apiStatusConstants.initial,
     fileName: '',
     uploadData: [],
     fetchedData: [],
@@ -33,7 +34,6 @@ class Home extends Component {
   getPostsData = async () => {
     this.setState({
       getApiStatus: apiStatusConstants.inProgress,
-      postApiStatus: apiStatusConstants.initial,
     })
     const apiUrl = 'https://finance-peer-node-js.herokuapp.com/posts'
     const response = await fetch(apiUrl)
@@ -43,6 +43,7 @@ class Home extends Component {
       this.setState({
         fetchedData: data,
         getApiStatus: apiStatusConstants.success,
+        postApiStatus: apiStatusConstants.initial,
       })
     } else {
       this.setState({getApiStatus: apiStatusConstants.failure})
@@ -80,7 +81,7 @@ class Home extends Component {
 
   clearData = async () => {
     console.log('clear data clicked')
-    this.setState({getApiStatus: apiStatusConstants.inProgress})
+    this.setState({deleteApiStatus: apiStatusConstants.inProgress})
     const apiUrl = 'https://finance-peer-node-js.herokuapp.com/data'
     const options = {
       method: 'DELETE',
@@ -89,7 +90,10 @@ class Home extends Component {
     const response = await fetch(apiUrl, options)
 
     if (response.ok) {
-      this.setState({getApiStatus: apiStatusConstants.cleared})
+      this.setState({
+        getApiStatus: apiStatusConstants.cleared,
+        deleteApiStatus: apiStatusConstants.initial,
+      })
     }
   }
 
@@ -111,6 +115,17 @@ class Home extends Component {
       )
     }
     reader.readAsText(files[0])
+  }
+
+  clearButtonStatus = () => {
+    const {deleteApiStatus} = this.state
+
+    switch (deleteApiStatus) {
+      case apiStatusConstants.inProgress:
+        return 'Loading...'
+      default:
+        return 'Clear'
+    }
   }
 
   renderPostsSuccess = () => {
@@ -138,7 +153,7 @@ class Home extends Component {
             className="upload-button"
             onClick={this.clearData}
           >
-            Clear
+            {this.clearButtonStatus()}
           </button>
         </div>
       </div>
@@ -214,7 +229,10 @@ class Home extends Component {
               Click On Upload button To upload JSON File and See the Output.
             </p>
             <div className="react-file-reader-container">
-              <ReactFileReader handleFiles={this.handleFiles}>
+              <ReactFileReader
+                fileTypes={['.json']}
+                handleFiles={this.handleFiles}
+              >
                 <button type="button" className="upload-button">
                   Upload
                 </button>
